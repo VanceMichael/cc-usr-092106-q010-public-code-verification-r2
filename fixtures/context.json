@@ -1,0 +1,10 @@
+{
+  "domain": "public-code-verification",
+  "version": 1,
+  "facts": [
+    "公众可通过平台扫码查询药品流转轨迹",
+    "查询量达到日均五百万人次以上",
+    "查询结果需要兼顾来源核验与隐私"
+  ],
+  "sample_id": "sample-010"
+}
