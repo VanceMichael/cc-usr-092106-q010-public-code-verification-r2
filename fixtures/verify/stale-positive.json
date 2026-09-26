@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "domain": "public-code-verification",
+  "result_ref": "rr-20260926-0006-fictitious",
+  "state": "LEGIT_CIRCULATION",
+  "reasons": [
+    "manufacturer_record_found",
+    "manufacturer_qualified",
+    "chain_continuous",
+    "legal_chain_latest"
+  ],
+  "rule_version": 3,
+  "data_as_of": "2026-09-26T03:00:00+08:00",
+  "data_epoch": 58190,
+  "generated_at": "2026-09-26T08:21:47+08:00",
+  "stale": true,
+  "code_ref": {
+    "code_hash": "hmacsha256fictitious00000000000000000000000000ee22ff"
+  },
+  "product": {
+    "generic_name": "虚构示例：维生素C片",
+    "batch_id": "FX260820",
+    "produced_on": "2026-08-22"
+  },
+  "trail": [
+    {
+      "node_type": "MANUFACTURER",
+      "region": "河北省",
+      "at": "2026-08-24"
+    },
+    {
+      "node_type": "WHOLESALE",
+      "region": "天津市",
+      "at": "2026-09-05"
+    }
+  ],
+  "subscription": {
+    "subscribed": false,
+    "subscribe_path": "/v1/subscriptions"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "domain": "public-code-verification",
+  "result_ref": "rr-20260926-0004-fictitious",
+  "state": "UNCONFIRMED",
+  "reasons": [
+    "code_not_registered"
+  ],
+  "rule_version": 3,
+  "data_as_of": "2026-09-26T08:00:00+08:00",
+  "data_epoch": 58211,
+  "generated_at": "2026-09-26T08:07:55+08:00",
+  "code_ref": {
+    "code_hash": "hmacsha256fictitious00000000000000000000000000aa00bb"
+  },
+  "action": {
+    "guidance_ref": "虚构指引G-UNCONFIRMED-01",
+    "instruction_code": "VERIFY_VIA_OTHER_CHANNEL"
+  },
+  "subscription": {
+    "subscribed": false,
+    "subscribe_path": "/v1/subscriptions"
+  }
+}

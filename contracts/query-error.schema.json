@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "查询错误",
+  "description": "残损输入与访问控制错误的响应形态。错误响应不携带任何轨迹或码注册元数据。",
+  "type": "object",
+  "required": ["schema_version", "domain", "error_code", "retryable"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "domain": {
+      "type": "string",
+      "const": "public-code-verification"
+    },
+    "error_code": {
+      "type": "string",
+      "enum": ["MALFORMED_INPUT", "RATE_LIMITED"]
+    },
+    "detail_code": {
+      "type": "string",
+      "enum": [
+        "checksum_invalid",
+        "length_invalid",
+        "charset_invalid",
+        "decode_failed",
+        "quota_soft",
+        "quota_hard"
+      ]
+    },
+    "retryable": { "type": "boolean" },
+    "retry_after_seconds": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "public_message": {
+      "type": "string",
+      "maxLength": 120
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": { "properties": { "error_code": { "const": "RATE_LIMITED" } } },
+      "then": { "required": ["retry_after_seconds"] }
+    }
+  ]
+}

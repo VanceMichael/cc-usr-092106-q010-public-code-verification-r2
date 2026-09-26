@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "domain": "public-code-verification",
+  "error_code": "MALFORMED_INPUT",
+  "detail_code": "checksum_invalid",
+  "retryable": true,
+  "public_message": "追溯码识别有误，请重新扫码或核对后手工录入（虚构示例）"
+}

@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "公众核验结果",
+  "description": "扫码来源核验对公众发布的唯一响应形态。DTO 白名单序列化，只可含本 schema 列出的字段；轨迹节点禁止出现机构名与个人信息。",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "domain",
+    "result_ref",
+    "state",
+    "reasons",
+    "rule_version",
+    "data_as_of",
+    "data_epoch",
+    "generated_at",
+    "code_ref"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "domain": {
+      "type": "string",
+      "const": "public-code-verification"
+    },
+    "result_ref": {
+      "type": "string",
+      "minLength": 8,
+      "description": "本次发布结论的不可变引用，历史回看、异议与通知均凭它关联"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "PRODUCED",
+        "LEGIT_CIRCULATION",
+        "RECALLED",
+        "PENDING_REVIEW",
+        "UNCONFIRMED"
+      ]
+    },
+    "reasons": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "manufacturer_record_found",
+          "manufacturer_qualified",
+          "chain_continuous",
+          "legal_chain_latest",
+          "recall_active",
+          "chain_gap_detected",
+          "qualification_under_check",
+          "authority_hold",
+          "scan_geo_anomaly",
+          "code_not_registered",
+          "upstream_unavailable"
+        ]
+      }
+    },
+    "rule_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "data_as_of": {
+      "type": "string",
+      "format": "date-time",
+      "description": "结论所依据权威快照的截止时间"
+    },
+    "data_epoch": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "权威数据版本号，缓存按它隔离与对账"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "stale": {
+      "type": "boolean",
+      "description": "降级返回陈旧缓存时必须为 true，并以 data_as_of 标明数据时间"
+    },
+    "code_ref": {
+      "type": "object",
+      "required": ["code_hash"],
+      "properties": {
+        "code_hash": {
+          "type": "string",
+          "minLength": 16,
+          "description": "追溯码的 HMAC 摘要，响应中不出现明文码"
+        }
+      },
+      "additionalProperties": false
+    },
+    "product": {
+      "type": "object",
+      "required": ["generic_name", "batch_id"],
+      "properties": {
+        "generic_name": { "type": "string", "minLength": 1 },
+        "batch_id": { "type": "string", "minLength": 1 },
+        "produced_on": {
+          "type": "string",
+          "format": "date",
+          "description": "时间只精确到日"
+        }
+      },
+      "additionalProperties": false
+    },
+    "trail": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["node_type", "region", "at"],
+        "properties": {
+          "node_type": {
+            "type": "string",
+            "enum": [
+              "MANUFACTURER",
+              "WHOLESALE",
+              "RETAIL",
+              "MEDICAL_INSTITUTION",
+              "RECALL"
+            ]
+          },
+          "region": {
+            "type": "string",
+            "minLength": 1,
+            "description": "省级粗粒度地域，不包含具体机构"
+          },
+          "at": {
+            "type": "string",
+            "format": "date",
+            "description": "只精确到日"
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 60,
+            "description": "必要的公开摘要，如环节资质状态；不得含机构名或个人信息"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "notice_ref": {
+      "type": "string",
+      "description": "对外公告编号（如召回公告），不得使用内部案件编号"
+    },
+    "action": {
+      "type": "object",
+      "required": ["guidance_ref", "instruction_code"],
+      "properties": {
+        "guidance_ref": { "type": "string", "minLength": 1 },
+        "instruction_code": {
+          "type": "string",
+          "enum": ["STOP_USE_AND_RETURN", "FOLLOW_RECALL_NOTICE", "VERIFY_VIA_OTHER_CHANNEL", "WAIT_REVIEW"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "subscription": {
+      "type": "object",
+      "required": ["subscribed"],
+      "properties": {
+        "subscribed": { "type": "boolean" },
+        "subscribe_path": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": { "properties": { "state": { "const": "RECALLED" } } },
+      "then": { "required": ["notice_ref", "action"] }
+    },
+    {
+      "if": { "properties": { "state": { "const": "UNCONFIRMED" } } },
+      "then": {
+        "properties": {
+          "reasons": {
+            "contains": {
+              "enum": ["code_not_registered", "upstream_unavailable"]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "state": { "const": "PENDING_REVIEW" } } },
+      "then": {
+        "properties": {
+          "reasons": {
+            "contains": {
+              "enum": ["chain_gap_detected", "qualification_under_check", "authority_hold"]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

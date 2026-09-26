@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "domain": "public-code-verification",
+  "result_ref": "rr-20260926-0007-fictitious",
+  "state": "PRODUCED",
+  "reasons": [
+    "manufacturer_record_found",
+    "manufacturer_qualified"
+  ],
+  "rule_version": 3,
+  "data_as_of": "2026-09-26T08:00:00+08:00",
+  "data_epoch": 58211,
+  "generated_at": "2026-09-26T08:09:30+08:00",
+  "code_ref": {
+    "code_hash": "hmacsha256fictitious0000000000000000000000000033ff44"
+  },
+  "product": {
+    "generic_name": "虚构示例：葡萄糖酸钙口服液",
+    "batch_id": "FX260910",
+    "produced_on": "2026-09-12"
+  },
+  "trail": [
+    {
+      "node_type": "MANUFACTURER",
+      "region": "四川省",
+      "at": "2026-09-14",
+      "summary": "生产记录与主体资质有效"
+    }
+  ],
+  "subscription": {
+    "subscribed": false,
+    "subscribe_path": "/v1/subscriptions"
+  }
+}

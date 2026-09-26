@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "domain": "public-code-verification",
+  "error_code": "RATE_LIMITED",
+  "detail_code": "quota_hard",
+  "retryable": true,
+  "retry_after_seconds": 30,
+  "public_message": "当前查询过于频繁，请稍后再试（虚构示例）"
+}
